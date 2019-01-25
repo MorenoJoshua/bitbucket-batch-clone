@@ -1,0 +1,35 @@
+{
+  "name": "bitbucket-team-clone",
+  "version": "1.0.0",
+  "description": "Batch clone for bitbucket repos",
+  "main": "./js/index.js",
+  "scripts": {
+    "preinstall": "npm run tsc",
+    "start": "node ./js/index.js",
+    "tsc": "tsc"
+  },
+  "bin": {
+    "bitbucket-batch-clone": "./js/index.js"
+  },
+  "keywords": [
+    "bitbucket clone",
+    "bitbucket"
+  ],
+  "author": {
+    "url": "https://morenojoshua.com",
+    "email": "hello@morenojoshua.com",
+    "name": "Joshua Moreno"
+  },
+  "homepage": "https://github.com/MorenoJoshua/bitbucket-batch-clone",
+  "license": "MIT",
+  "dependencies": {
+    "@types/inquirer": "^0.0.43",
+    "axios": "^0.18.0",
+    "git-clone": "^0.1.0",
+    "inquirer": "^6.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9",
+    "typescript": "^3.2.4"
+  }
+}
