@@ -1,6 +1,6 @@
 {
   "name": "bitbucket-batch-clone",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Batch clone for bitbucket repos",
   "main": "./js/index.js",
   "scripts": {
