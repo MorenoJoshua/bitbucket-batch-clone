@@ -1,9 +1,8 @@
 # ✨bitbucket-batch-clone✨
 
-Made this in a pinch wile struggling to set up work repos on my personal computer
+Made this in a pinch while struggling to set up work repos on my personal computer.
 
-Gets repo information and clones to the current directory
-
+Gets repo information and clones all selected to `./[Repo Name]`
 
 Install with
 `npm i -g https://github.com/MorenoJoshua/bitbucket-batch-clone`
