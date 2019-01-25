@@ -1,5 +1,5 @@
 {
-  "name": "bitbucket-team-clone",
+  "name": "bitbucket-batch-clone",
   "version": "1.0.0",
   "description": "Batch clone for bitbucket repos",
   "main": "./js/index.js",
