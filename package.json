@@ -4,7 +4,7 @@
   "description": "Batch clone for bitbucket repos",
   "main": "./js/index.js",
   "scripts": {
-    "preinstall": "npm run tsc",
+    "prestart": "npm run tsc",
     "start": "node ./js/index.js",
     "tsc": "tsc"
   },
