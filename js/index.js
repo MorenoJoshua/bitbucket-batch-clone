@@ -52,70 +52,91 @@ var inquirer = require("inquirer");
 var axios_1 = require("axios");
 var gitclone = require("git-clone");
 var app = function () { return __awaiter(_this, void 0, void 0, function () {
-    var questions, responses, _i, questions_1, question, _a, bbinfo, repos, reposToCloneQuestion, reposArr, _b, reposArr_1, repo;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
+    var username, password, teamName, responses, _a, _b, _c, bbinfo, repos, reposToCloneQuestion, reposArr, _i, reposArr_1, repo;
+    return __generator(this, function (_d) {
+        switch (_d.label) {
             case 0:
-                questions = [
-                    {
-                        name: 'username',
-                        type: "input",
-                        message: "Please input your Bitbucket Username"
-                    }, {
-                        name: 'password',
-                        type: "password",
-                        message: "Please input your Bitbucket Password"
-                    },
-                    {
-                        name: 'teamname',
-                        type: "input",
-                        message: "Please input a Team/User name"
-                    },
-                ];
+                username = {
+                    name: 'username',
+                    type: "input",
+                    message: "Please input your Bitbucket Username (Leave blank if you don't need authentication)"
+                };
+                password = {
+                    name: 'password',
+                    type: "password",
+                    message: "Please input your Bitbucket Password",
+                    verify: function (hash) { return !!hash.match(/.+/) ? true : 'Please enter a password'; }
+                };
+                teamName = {
+                    name: 'teamname',
+                    type: "input",
+                    message: "Please input a Team/User name",
+                    verify: function (hash) { return !!hash.match(/.+/) ? true : 'Please enter a team name or Username'; }
+                };
                 responses = {};
-                _i = 0, questions_1 = questions;
-                _c.label = 1;
-            case 1:
-                if (!(_i < questions_1.length)) return [3 /*break*/, 4];
-                question = questions_1[_i];
                 _a = [{}, responses];
-                return [4 /*yield*/, inquirer.prompt(question)];
+                return [4 /*yield*/, inquirer.prompt(username)];
+            case 1:
+                responses = __assign.apply(void 0, _a.concat([_d.sent()]));
+                if (!(responses.username && responses.username !== '')) return [3 /*break*/, 3];
+                _b = [{}, responses];
+                return [4 /*yield*/, inquirer.prompt(password)];
             case 2:
-                responses = __assign.apply(void 0, _a.concat([_c.sent()]));
-                _c.label = 3;
+                responses = __assign.apply(void 0, _b.concat([_d.sent()]));
+                _d.label = 3;
             case 3:
-                _i++;
-                return [3 /*break*/, 1];
+                _c = [{}, responses];
+                return [4 /*yield*/, inquirer.prompt(teamName)];
             case 4:
-                if (!(responses.teamname && responses.username && responses.password)) return [3 /*break*/, 10];
+                responses = __assign.apply(void 0, _c.concat([_d.sent()]));
+                bbinfo = {};
+                if (!(responses.teamname !== '' && responses.username === '')) return [3 /*break*/, 6];
                 return [4 /*yield*/, axios_1.default
-                        .get("https://" + responses.username + ":" + responses.password + "@api.bitbucket.org/1.0/users/" + responses.teamname).then(function (r) { return r.data; })
+                        .get("https://api.bitbucket.org/1.0/users/" + responses.teamname).then(function (r) { return r.data; })
                         .catch(function (e) { return console.warn(e); })];
             case 5:
-                bbinfo = _c.sent();
+                bbinfo = _d.sent();
+                return [3 /*break*/, 8];
+            case 6:
+                if (!(responses.teamname != '' && responses.username != '' && responses.password != '')) return [3 /*break*/, 8];
+                return [4 /*yield*/, axios_1.default
+                        .get("https://api.bitbucket.org/1.0/users/" + responses.teamname, {
+                        auth: {
+                            password: responses.password,
+                            username: responses.username,
+                        }
+                    }).then(function (r) { return r.data; })
+                        .catch(function (e) { return console.warn(e); })];
+            case 7:
+                bbinfo = _d.sent();
+                _d.label = 8;
+            case 8:
                 repos = bbinfo.repositories;
                 reposToCloneQuestion = {
                     name: 'repostoclone',
                     message: 'Please select the repos you want to clone',
                     type: "checkbox",
+                    pageSize: 40,
                     choices: repos.map(function (repo) { return repo.name; })
                 };
                 return [4 /*yield*/, inquirer.prompt(reposToCloneQuestion).catch(function (e) { return console.warn(e); })];
-            case 6:
-                reposArr = (_c.sent()).repostoclone;
-                _b = 0, reposArr_1 = reposArr;
-                _c.label = 7;
-            case 7:
-                if (!(_b < reposArr_1.length)) return [3 /*break*/, 10];
-                repo = reposArr_1[_b];
-                return [4 /*yield*/, gitclone("https://" + responses.username + ":" + responses.password + "@bitbucket.org/" + responses.teamname + "/" + repo + ".git", "./" + repo, {}, console.log("Cloning " + repo + "..."))];
-            case 8:
-                _c.sent();
-                _c.label = 9;
             case 9:
-                _b++;
-                return [3 /*break*/, 7];
-            case 10: return [2 /*return*/];
+                reposArr = (_d.sent()).repostoclone;
+                _i = 0, reposArr_1 = reposArr;
+                _d.label = 10;
+            case 10:
+                if (!(_i < reposArr_1.length)) return [3 /*break*/, 13];
+                repo = reposArr_1[_i];
+                return [4 /*yield*/, gitclone("https://" + responses.username + ":" + responses.password + "@bitbucket.org/" + responses.teamname + "/" + repo + ".git", 
+                    // `https://${responses.username}:${responses.password}@bitbucket.org/${responses.teamname}/${repo}.git`,
+                    "./" + repo, {}, console.log("Cloning " + repo + "..."))];
+            case 11:
+                _d.sent();
+                _d.label = 12;
+            case 12:
+                _i++;
+                return [3 /*break*/, 10];
+            case 13: return [2 /*return*/];
         }
     });
 }); };
